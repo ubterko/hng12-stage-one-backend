@@ -45,7 +45,7 @@ def is_armstrong(number):
     number_string = number.replace("-","")
     number_of_digits = len(number_string) 
     for index in range(number_of_digits):
-        sum_of_power += int(number_string[index]) ** (len(number_string))
+        sum_of_power += int(number_string[index]) ** number_of_digits
     if (sum_of_power == int(number_string)):
         return True 
     return False
