@@ -79,7 +79,7 @@ class Number(Resource):
             is_perfect_number = is_perfect(int(number))
             numbers_properties = get_properties(int(number))
             numbers_digit_sum = sum_digits(number)
-            numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/trivia").text
+            numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/math").text
         
             return {
                 "number":number,
