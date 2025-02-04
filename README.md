@@ -2,19 +2,32 @@
 An api that returns information about a particular number in JSON format. 
 
 ## How to run the project 
+Create and activate a python virtual environment.
+On windows:
+```
+    python -m venv env
+    . env\Scripts\activate
+```
+
+On Linux:
+```
+    python3 -m venv env
+    source env/bin/activate
+```
+
 Install the applications dependencies from requirements.txt
 
-`pip install -r requirements.txt` 
+```pip install -r requirements.txt``` 
 
 Then in the project `/src` directory run.
 
-`python server.py`
+    python server.py
 
 This will start the server listening at 'http://localhost:5000'. To access the resource required for this assignment make a GET request to the endpoint 'http://localhost:5000/classify-number'.
 
 ## Documentation 
 
-`GET /classify-number`
+```GET /classify-number```
 
 An endpoint for accessing the 'me' resource object. Make a GET request to the  `/me` URL to get a JSON response containing email, current_datetime, and github url linking to this repository.
 
@@ -29,7 +42,7 @@ An endpoint for accessing the 'me' resource object. Make a GET request to the  `
 
 3. Wait for the installations to complete then change directory into the `/src` folder in the project main directory run the following commands
 
-     `python server.py`
+     ```python server.py```
 
     This will start the server listening at 'http://localhost:5000'. 
 
