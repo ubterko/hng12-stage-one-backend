@@ -83,7 +83,7 @@ class Number(Resource):
             is_perfect_number = is_perfect(int(number))
             numbers_properties = get_properties(int(number))
             numbers_digit_sum = sum_digits(number)
-            # numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/math").text
+            numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/math").text
         
             return {
                 "number":number,
@@ -91,7 +91,7 @@ class Number(Resource):
                 "is_perfect":is_perfect_number ,
                 "properties":numbers_properties,
                 "digit_sum":numbers_digit_sum,
-                # "fun_fact":numbers_fun_fact
+                "fun_fact":numbers_fun_fact
             }, 200
             
         except ValueError:
