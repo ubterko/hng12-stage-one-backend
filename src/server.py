@@ -1,8 +1,11 @@
 import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_restful import Api, Resource
 
+# Initialize flask and flask extensions
 app = Flask(__name__)
+api = Api(app)
 cors = CORS(app)
 
 # Returns a True or False depending on if the number is a prime number
@@ -60,27 +63,42 @@ def get_properties(number):
     
     return properties
 
+# Returns the sum of digits in a number
 def sum_digits(number):
     sum = 0
     for digit in str(number):
         sum += int(digit)
     return sum
         
-# Route that returns data.
-@app.route('/api/classify-number')
-def index():
-    try:
-        number = request.args.get("number")
-        return jsonify({
-            "number": number,
-            "is_prime": is_prime(int(number)),
-            "is_perfect": is_perfect(int(number)),
-            "properties": get_properties(int(number)),
-            "digit_sum": sum_digits(number),
-            "fun_fact": requests.get(f"http://numbersapi.com/{number}/trivia").text
-        }), 200
-    except ValueError:
-        return jsonify({"number":number, "error":True}), 400
+# Resource class for the api       
+class Number(Resource):
+    def get(self):
+        try:
+            number = request.args.get("number")
+            is_prime_number = is_prime(int(number))
+            is_perfect_number = is_perfect(int(number))
+            numbers_properties = get_properties(int(number))
+            numbers_digit_sum = sum_digits(number)
+            numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/trivia").text
+        
+            return {
+                "number":number,
+                "is_prime":is_prime_number,
+                "is_perfect":is_perfect_number ,
+                "properties":numbers_properties,
+                "digit_sum":numbers_digit_sum,
+                "fun_fact":numbers_fun_fact
+            }, 200
+            
+        except ValueError:
+            error=True
+            
+            return {
+                "number":number, 
+                "error":error
+            }, 400 
+
+api.add_resource(Number, '/api/classify-number') 
     
 if __name__ == "__main__":
     app.run(debug=True)
