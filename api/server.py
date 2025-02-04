@@ -1,5 +1,4 @@
 import requests
-import math 
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -19,8 +18,7 @@ def is_prime(number):
         return True 
     if (number % 2 == 0) and (number != 2):
         return False 
-    
-    root_of_number = math.sqrt(number)
+    root_of_number = number ** (1/2)
     #   Loop from 3 to square root of number.
     for i in range(3, int(root_of_number)):
         # Check only odd numbers
@@ -44,63 +42,55 @@ def is_perfect(number):
 # Checks if number is armstrong number
 def is_armstrong(number):
     sum_of_power = 0
-    number_string = number
+    number_string = number.replace("-","")
     number_of_digits = len(number_string) 
-    
     for index in range(number_of_digits):
-        sum_of_power += int(number_string[index]) ** len(number_string)
-        
-    if (sum_of_power == number):
+        sum_of_power += int(number_string[index]) ** (len(number_string))
+    if (sum_of_power == int(number_string)):
         return True 
     return False
 
 # Returns an array containing properties of the number.
 def get_properties(number):
     properties = []
-    
-    if is_armstrong:
+    if is_armstrong(str(number)):
         properties.append("armstrong")
     if (number % 2 == 0):
         properties.append("even")
     else: 
         properties.append("odd")
-    
     return properties
 
 # Returns the sum of digits in a number
 def sum_digits(number):
-    sum = 0
-    for digit in str(number):
-        sum += int(digit)
-    return sum
+    number = number.replace("-","")
+    digit_sum = sum(int(digit) for digit in number)
+    return digit_sum
         
 # Resource class for the api       
 class Number(Resource):
     def get(self):
+        number = request.args.get("number")
         try:
-            number = request.args.get("number")
-            is_prime_number = is_prime(int(number))
-            is_perfect_number = is_perfect(int(number))
-            numbers_properties = get_properties(int(number))
+            concat_number = int(number)
+            is_prime_number = is_prime(concat_number)
+            is_perfect_number = is_perfect(concat_number)
+            numbers_properties = get_properties(concat_number)
             numbers_digit_sum = sum_digits(number)
-            numbers_fun_fact = "371 is an Armstrong number because 3^3 + 7^3 + 1^3 = 371"
+            response = requests.get(f"http://numbersapi.com/{concat_number}/math")
+            numbers_fun_fact = response.text
         
             return {
-                "number":number,
-                "is_prime":is_prime_number,
-                "is_perfect":is_perfect_number ,
-                "properties":numbers_properties,
-                "digit_sum":numbers_digit_sum,
-                "fun_fact":numbers_fun_fact
+                "number": number,
+                "is_prime": is_prime_number,
+                "is_perfect": is_perfect_number ,
+                "properties": numbers_properties,
+                "digit_sum": numbers_digit_sum,
+                "fun_fact": numbers_fun_fact
             }, 200
-            
         except ValueError:
             error=True
-            
-            return {
-                "number":number, 
-                "error":error
-            }, 400 
+            return {"number": number, "error": error}, 400 
 
 api.add_resource(Number, '/api/classify-number') 
     
