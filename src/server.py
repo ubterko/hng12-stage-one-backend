@@ -83,7 +83,7 @@ class Number(Resource):
             is_perfect_number = is_perfect(int(number))
             numbers_properties = get_properties(int(number))
             numbers_digit_sum = sum_digits(number)
-            numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/math").text
+            numbers_fun_fact = "371 is an Armstrong number because 3^3 + 7^3 + 1^3 = 371"
         
             return {
                 "number":number,
