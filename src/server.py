@@ -1,4 +1,6 @@
 import requests
+import math 
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_restful import Api, Resource
@@ -15,16 +17,18 @@ def is_prime(number):
         return False
     if (number == 2):
         return True 
-    if (number % 2 == 0) and number > 2:
+    if (number % 2 == 0) and (number != 2):
         return False 
     
-    # Checks for factors of number by dividing number by factors in the range
-    # of 3 - root of the number.
-    root_of_number = number ** 2 
-    for i in range(3, root_of_number):
-        if (number % i == 0):
-            return False 
-        return True
+    root_of_number = math.sqrt(number)
+    #   Loop from 3 to square root of number.
+    for i in range(3, int(root_of_number)):
+        # Check only odd numbers
+        if (number % 2 != 0):
+            # If number is divisible by any return False
+            if (number % i == 0) :
+                return False 
+    return True
     
 # Returns True or False depending on if number is perfect.
 def is_perfect(number):
@@ -32,7 +36,7 @@ def is_perfect(number):
     for i in range(1, (number-1)):
         if (number % i == 0):
             sum += i
-            
+    # Number is perfect if equal to the sum of its factors.
     if (sum == number):
         return True 
     return False
@@ -79,7 +83,7 @@ class Number(Resource):
             is_perfect_number = is_perfect(int(number))
             numbers_properties = get_properties(int(number))
             numbers_digit_sum = sum_digits(number)
-            numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/math").text
+            # numbers_fun_fact = requests.get(f"http://numbersapi.com/{number}/math").text
         
             return {
                 "number":number,
@@ -87,7 +91,7 @@ class Number(Resource):
                 "is_perfect":is_perfect_number ,
                 "properties":numbers_properties,
                 "digit_sum":numbers_digit_sum,
-                "fun_fact":numbers_fun_fact
+                # "fun_fact":numbers_fun_fact
             }, 200
             
         except ValueError:
