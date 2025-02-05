@@ -1,5 +1,5 @@
 # Introduction
-An api that returns information about a particular number in JSON format. 
+An api that returns information about a given number in JSON format. 
 
 ## How to run the project 
 Create and activate a python virtual environment.
@@ -23,11 +23,11 @@ Then in the project `/src` directory run.
 
     python server.py
 
-This will start the server listening at 'http://localhost:5000'. To access the resource required for this assignment make a GET request to the endpoint 'http://localhost:5000/classify-number'.
+This will start the server listening at 'http://localhost:5000'. To access the resource required for this assignment make a GET request to the endpoint 'http://localhost:5000/classify-number'. With the number provided as an argument. For example `?number=371`.
 
 ## Documentation 
 
-```GET /classify-number```
+```GET /classify-number?number=371```
 
 An endpoint for accessing the 'me' resource object. Make a GET request to the  `/me` URL to get a JSON response containing email, current_datetime, and github url linking to this repository.
 
